@@ -1,0 +1,12 @@
+node_modules
+*.js.map
+*.ts
+.vscode
+__azurite_db*__.json
+__blobstorage__
+__queuestorage__
+local.settings.json
+jsconfig.json
+mocks
+config/local.js
+*.zip
