@@ -10,12 +10,6 @@
     }
   },
   "parameters": {
-    "storageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Storage Account Name"
-      }
-    },
     "streamSecurityApiUrl": {
       "defaultValue": "https://app.streamsec.io",
       "type": "string",
@@ -29,53 +23,32 @@
         "description": "Stream Security collection token used to forward logs"
       }
     },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage Account Name"
+      }
+    },
     "networkTrafficBlobContainer": {
       "type": "string",
       "metadata": {
         "description": "Blob container in a storage account that contains target logs"
       }
-    },
-    "appName": {
-      "type": "string",
-      "defaultValue": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
-      "metadata": {
-        "description": "Stream Security activity logs collectors"
-      }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Location for all resources."
-      }
-    },
-    "appInsightsLocation": {
-      "type": "string",
-      "defaultValue": "eastus",
-      "metadata": {
-        "description": "Location for Application Insights"
-      }
-    },
-    "packageUri": {
-      "type": "string",
-      "defaultValue": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.0/azure-log-collectors.zip",
-      "metadata": {
-        "description": "The zip content url for the function app"
-      }
     }
   },
   "variables": {
-    "functionAppName": "[parameters('appName')]",
-    "hostingPlanName": "[parameters('appName')]",
-    "applicationInsightsName": "[parameters('appName')]",
-    "functionWorkerRuntime": "node"
+    "functionAppName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
+    "hostingPlanName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
+    "applicationInsightsName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
+    "functionWorkerRuntime": "node",
+    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.0/azure-log-collectors.zip"
   },
   "resources": [
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2021-03-01",
       "name": "[variables('hostingPlanName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Y1",
         "tier": "Dynamic"
@@ -86,7 +59,7 @@
       "type": "Microsoft.Web/sites",
       "apiVersion": "2021-03-01",
       "name": "[variables('functionAppName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "kind": "functionapp",
       "identity": {
         "type": "SystemAssigned"
@@ -150,7 +123,7 @@
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
       "name": "[variables('applicationInsightsName')]",
-      "location": "[parameters('appInsightsLocation')]",
+      "location": "eastus",
       "kind": "web",
       "properties": {
         "Application_Type": "web",
@@ -161,9 +134,9 @@
       "name": "[concat(variables('functionAppName'), '/ZipDeploy')]",
       "type": "Microsoft.Web/sites/extensions",
       "apiVersion": "2021-02-01",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
-        "packageUri": "[parameters('packageUri')]"
+        "packageUri": "[variables('packageUri')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
