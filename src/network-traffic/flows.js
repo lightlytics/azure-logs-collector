@@ -37,7 +37,7 @@ const flowCategoryInfo = {
     flowGroups: 'flowGroups',
     // fields https://learn.microsoft.com/en-us/azure/network-watcher/media/vnet-flow-logs-overview/vnet-flow-log-format.png#lightbox
     fields: [
-      'start',
+      'startms',
       'srcaddr',
       'dstaddr',
       'srcport',
@@ -85,7 +85,10 @@ const ParseFlows = data => {
   const logs = []
   const category = data.records?.[0]?.category
   const resourceIdField = flowCategoryInfo[category].resourceId
-  const resourceId = data.records?.[0][resourceIdField]
+  const resourceId =
+    data.records?.[0][resourceIdField] ||
+    data.records?.[0]['flowLogResourceID'] ||
+    data.records?.[0]['resourceId']
 
   const flows = data.records.reduce(
     (acc, record) => [...acc, ...extractor(record.category, record)],
@@ -99,7 +102,7 @@ const ParseFlows = data => {
     logs.push(FlowlogConverter(log))
   })
 
-  const accountIdString = resourceId.split('/')[2]
+  const accountIdString = resourceId?.split('/')[2]
 
   return {
     accountIdString,
@@ -124,6 +127,7 @@ const SwapLogDirection = log => {
 
 const FlowlogConverter = ({
   start,
+  startms,
   srcaddr,
   dstaddr,
   srcport,
@@ -133,7 +137,7 @@ const FlowlogConverter = ({
   flow_state,
   bytes_sent,
 }) => {
-  const date = new Date(start * 1000)
+  const date = new Date(start ? Number(start) * 1000 : Number(startms))
   const protocol_code = protocol === 'T' || protocol === 6 ? 6 : 17
   const action =
     traffic_decision === 'D' || flow_state === 'D'

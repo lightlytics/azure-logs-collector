@@ -1,4 +1,4 @@
-# Azure Activity Log Collectors
+# Azure Activity Logs Collector
 
 ### Network Traffic Collector Function
 
