@@ -4,6 +4,7 @@ const {
   FlowLogsDeviceTypeEnum,
   FlowLogActionEnum,
 } = require('../models/protobuf/proto')
+const iana = require('./iana.json')
 
 const flowCategoryInfo = {
   NetworkSecurityGroupFlowEvent: {
@@ -97,7 +98,7 @@ const ParseFlows = data => {
 
   flows.forEach(log => {
     if (log.bytes_received) {
-      logs.push(FlowlogConverter(SwapLogDirection(log)))
+      logs.push(FlowlogConverter(SwapLogDirection(log), true))
     }
     logs.push(FlowlogConverter(log))
   })
@@ -125,20 +126,27 @@ const SwapLogDirection = log => {
   return swappedLog
 }
 
-const FlowlogConverter = ({
-  start,
-  startms,
-  srcaddr,
-  dstaddr,
-  srcport,
-  dstport,
-  protocol,
-  traffic_decision,
-  flow_state,
-  bytes_sent,
-}) => {
+const FlowlogConverter = (
+  {
+    start,
+    startms,
+    srcaddr,
+    dstaddr,
+    srcport,
+    dstport,
+    protocol,
+    traffic_decision,
+    flow_state,
+    bytes_sent,
+  },
+  swapped = false,
+) => {
   const date = new Date(start ? Number(start) * 1000 : Number(startms))
-  const protocol_code = protocol === 'T' || protocol === 6 ? 6 : 17
+  const protocolCode = isNaN(protocol)
+    ? protocol === 'T'
+      ? 6
+      : 17
+    : Number(protocol)
   const action =
     traffic_decision === 'D' || flow_state === 'D'
       ? FlowLogActionEnum.values.REJECT
@@ -151,12 +159,29 @@ const FlowlogConverter = ({
     srcport: Number(srcport),
     dstport: Number(dstport),
     protocol: {
-      protocol: protocol === 'T' || protocol === 6 ? 'TCP' : 'UDP',
-      protocol_code,
+      protocol: isNaN(protocol)
+        ? protocol === 'T'
+          ? 'TCP'
+          : 'UDP'
+        : iana[protocol] || (protocol === '6' ? 'TCP' : 'UDP'),
+      protocolCode,
     },
     bytes: Number(bytes_sent),
     action,
+    tcpFlags: getTcpFlags(flow_state, swapped),
   })
+}
+
+function getTcpFlags(flow_state, swapped = false) {
+  switch (flow_state) {
+    case 'B':
+      return swapped ? 18 : 2
+    case 'C':
+      return 0
+    case 'E':
+      return 1
+  }
+  return 0
 }
 
 function dateToProtoTimestamp(date) {
