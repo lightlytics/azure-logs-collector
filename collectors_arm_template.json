@@ -41,7 +41,7 @@
     "hostingPlanName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.0/azure-log-collectors.zip"
+    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.1/azure-log-collectors.zip"
   },
   "resources": [
     {

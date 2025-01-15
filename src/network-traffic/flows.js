@@ -103,7 +103,7 @@ const ParseFlows = data => {
     logs.push(FlowlogConverter(log))
   })
 
-  const accountIdString = resourceId?.split('/')[2]
+  const accountIdString = String(resourceId?.split('/')[2]).toLowerCase()
 
   return {
     accountIdString,

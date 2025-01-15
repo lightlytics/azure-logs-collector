@@ -1,6 +1,6 @@
 {
-  "name": "test-azure",
-  "version": "1.0.0",
+  "name": "azure-logs-collector",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "copy-proto": "yes | cp -r ../../shared/protobuf ./src/models/",
