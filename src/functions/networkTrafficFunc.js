@@ -29,6 +29,7 @@ app.storageBlob('networkTrafficCollector', {
     try {
       const response = await httpClient.postFlowLogsBatch(
         protoBatch,
+        flowsBatch.accountIdString,
         flowsBatch.logs.length,
       )
       context.log(
