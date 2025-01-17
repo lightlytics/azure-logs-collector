@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "config": "^3.3.10",
     "google-protobuf": "^3.21.2",
     "protobufjs": "^7.2.6",
