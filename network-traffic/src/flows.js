@@ -3,7 +3,7 @@ const {
   flowLogsMsgProto,
   FlowLogsDeviceTypeEnum,
   FlowLogActionEnum,
-} = require('../models/protobuf/proto')
+} = require('./models/protobuf/proto')
 const iana = require('./iana.json')
 
 const flowCategoryInfo = {

@@ -32,26 +32,10 @@ class RestClient {
     })
   }
 
-  beforeRetryHookHandler(options, error, retryCount) {
-    if (!retryCount) {
-      retryCount = 1
-    }
-    console.log(
-      `received error from server: ${error} - retry count: ${retryCount}`,
-    )
-  }
-
-  _getRetryOptions() {
-    return {
-      methods: ['POST'],
-      limit: 3,
-    }
-  }
-
   async postFlowLogsBatch(flowLogsSerializedBatch, accountId, recordCount) {
     if (!flowLogsSerializedBatch) {
       throw new Error(
-        "Missing the required parameter 'flowLogsSerializedBatch' when calling postFlowLogsBatch",
+        'Missing the required parameter \'flowLogsSerializedBatch\' when calling postFlowLogsBatch',
       )
     }
     const resp = await this._requestHandler(

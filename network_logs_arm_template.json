@@ -1,4 +1,4 @@
-// https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Fcollectors_arm_template.json
+// https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Fnetwork_logs_arm_template.json
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
@@ -41,7 +41,7 @@
     "hostingPlanName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.1/azure-log-collectors.zip"
+    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.2/network-traffic-collector.zip"
   },
   "resources": [
     {
