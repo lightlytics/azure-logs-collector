@@ -42,9 +42,36 @@ const isErrorCode = httpStatusCode => {
   return statusCode >= 400 && statusCode < 600
 }
 
+function extractIdentityAndType(logObject) {
+  let identity = ''
+  let identityType = ''
+
+  if (logObject.userPrincipalName) {
+    identity = logObject.userPrincipalName
+    identityType = 'azure_user'
+  } else if (logObject.userObjectId) {
+    identity = logObject.userObjectId
+    identityType = 'Unknown'
+  } else if (logObject.applicationId) {
+    identity = logObject.applicationId
+    identityType = 'Unknown'
+  } else if (logObject.requesterAccountName !== logObject.ownerAccountName) {
+    identity = logObject.requesterAccountName
+    identityType = 'Cloud_Azure'
+  }
+
+  return { identity, identityType }
+}
+
+function extractSubscriptionId(requestedObjectKey) {
+  const match = requestedObjectKey.match(/\/SUBSCRIPTIONS\/([A-Z0-9-]+)\//i)
+  return match ? String(match[1]).toLowerCase() : ''
+}
+
 const ParseLogs = logs => {
   const iamLogs = []
-  for (const log of logs) {
+  for (const log of logs.split('\n')) {
+    if (!log) continue
     const logFields = splitLogLine(log)
     const version = logFields[0]
     const template = logTemplate[version]
@@ -59,20 +86,24 @@ const ParseLogs = logs => {
         logObject.requesterIpAddress = removePort(logObject.requesterIpAddress)
       }
 
+      const isErrorLog = isErrorCode(logObject.httpStatusCode)
+      const { identity, identityType } = extractIdentityAndType(logObject)
+      const subscriptionId = extractSubscriptionId(logObject.requestedObjectKey)
+
       const iamLog = IAMLogProto.create({
-        eventTime: log.requestStartTime,
-        accountId: log.tenantId || log.ownerAccountName,
-        sourceIPAddress: requesterIpAddress,
-        identity: logObject.userPrincipalName || logObject.userObjectId || logObject.applicationId || logObject.requesterAccountName,
-        identityType: '',
-        action: log.operationType,
-        destination: log.requestedObjectKey,
+        eventTime: logObject.requestStartTime,
+        accountId: logObject.tenantId || subscriptionId,
+        sourceIPAddress: logObject.requesterIpAddress,
+        identity,
+        identityType,
+        action: logObject.operationType,
+        destination: logObject.requestedObjectKey,
         additionalInfo: '',
         region: '',
         count: 1,
-        userAgent: log.userAgentHeader,
-        errorCode: log.httpStatusCode,
-        errorMessage: isErrorCode(log.httpStatusCode) ? log.requestStatus : '',
+        userAgent: logObject.userAgentHeader,
+        errorCode: isErrorLog ? logObject.httpStatusCode : '',
+        errorMessage: isErrorLog ? logObject.requestStatus : '',
         consoleSession: false,
         mfaAuthenticated: false,
         sessionName: '',

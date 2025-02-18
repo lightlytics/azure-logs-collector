@@ -8,7 +8,6 @@ module.exports = {
   apiVersion: process.env.API_VERISON || 'v1',
   streamSecurityTokenHeader: 'X-Lightlytics-Token',
   isLocalMode,
-  storageLogsBlobContainer: process.env.STORAGE_LOGS_CONTAINER,
   // set by jest
   isTestMode: process.env.NODE_ENV === 'test',
 }

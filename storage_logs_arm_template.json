@@ -28,12 +28,6 @@
       "metadata": {
         "description": "Storage Account Name"
       }
-    },
-    "storageLogsBlobContainer": {
-      "type": "string",
-      "metadata": {
-        "description": "Blob container in a storage account that contains target logs"
-      }
     }
   },
   "variables": {
@@ -65,6 +59,10 @@
         "type": "SystemAssigned"
       },
       "properties": {
+        "httpsOnly": true,
+        "publicNetworkAccess": "Disabled",
+        "clientCertEnabled": true,
+        "clientCertMode": "Required",
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
         "siteConfig": {
           "appSettings": [
@@ -93,12 +91,12 @@
               "value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
             },
             {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "[variables('functionWorkerRuntime')]"
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "[variables('packageUri')]"
             },
             {
-              "name": "STORAGE_LOGS_CONTAINER",
-              "value": "[parameters('storageLogsBlobContainer')]"
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "[variables('functionWorkerRuntime')]"
             },
             {
               "name": "API_URL",
@@ -111,8 +109,7 @@
           ],
           "ftpsState": "FtpsOnly",
           "minTlsVersion": "1.2"
-        },
-        "httpsOnly": true
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
@@ -129,18 +126,6 @@
         "Application_Type": "web",
         "Request_Source": "rest"
       }
-    },
-    {
-      "name": "[concat(variables('functionAppName'), '/ZipDeploy')]",
-      "type": "Microsoft.Web/sites/extensions",
-      "apiVersion": "2021-02-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "packageUri": "[variables('packageUri')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
-      ]
     }
   ]
 }

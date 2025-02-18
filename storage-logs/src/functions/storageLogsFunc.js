@@ -1,18 +1,17 @@
 const { app } = require('@azure/functions')
 const zlib = require('node:zlib')
-const config = require('config')
 const { RestClient } = require('../restClient')
 const { IAMLogsBatchProto } = require('../models/protobuf/protoLoaderIAMLogs')
 const { ParseLogs } = require('../storageLogs')
 
 app.storageBlob('storageLogsCollector', {
-  path: `${config.get('storageLogsBlobContainer')}/{name}`,
+  path: '$logs/{name}',
   connection: 'AzureWebJobsStorage',
   handler: async (blob, context) => {
     console.log(`blob: "${context.triggerMetadata.name}"`)
-    const httpClient = new RestClient({ apiPath: 'collection/iam-logs' })
+    const httpClient = new RestClient({ apiPath: 'collection' })
 
-    const content = blob.toString().split('\n')
+    const content = blob.toString()
     const batch = ParseLogs(content)
     if (!batch) {
       console.log('No logs to send')
