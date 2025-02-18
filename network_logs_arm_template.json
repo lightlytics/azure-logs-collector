@@ -37,9 +37,9 @@
     }
   },
   "variables": {
-    "functionAppName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
-    "hostingPlanName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
-    "applicationInsightsName": "[format('streamsec-collectors-{0}', uniqueString(resourceGroup().id))]",
+    "functionAppName": "[format('streamsec-network-logs-{0}', uniqueString(resourceGroup().id))]",
+    "hostingPlanName": "[format('streamsec-network-logs-{0}', uniqueString(resourceGroup().id))]",
+    "applicationInsightsName": "[format('streamsec-network-logs-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
     "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.2/network-traffic-collector.zip"
   },

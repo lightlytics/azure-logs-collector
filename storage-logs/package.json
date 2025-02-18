@@ -1,5 +1,5 @@
 {
-  "name": "azure-logs-collector",
+  "name": "azure-storage-logs-collector",
   "version": "1.0.2",
   "description": "",
   "scripts": {
