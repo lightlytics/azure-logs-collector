@@ -2,7 +2,7 @@ const { app } = require('@azure/functions')
 const zlib = require('node:zlib')
 const config = require('config')
 const { RestClient } = require('../restClient')
-const { ParseFlows } = require('../network-traffic/flows')
+const { ParseFlows } = require('../flows')
 const { flowLogsBatchProto } = require('../models/protobuf/proto')
 
 app.storageBlob('networkTrafficCollector', {

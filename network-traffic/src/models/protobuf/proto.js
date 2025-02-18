@@ -1,5 +1,5 @@
 const protobuf = require('protobufjs')
-const protoFilePath = './src/models/protobuf/collection.proto'
+const protoFilePath = './network-traffic/src/models/protobuf/collection.proto'
 
 let pbRoot
 let flowLogsBatchProto

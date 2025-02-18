@@ -1,0 +1,28 @@
+{
+  "name": "azure-logs-collector",
+  "version": "1.0.2",
+  "description": "",
+  "scripts": {
+    "copy-proto": "yes | cp -r ../../shared/protobuf ./src/models/",
+    "copy-proto-windows": "robocopy ../../shared/protobuf ./src/models/protobuf",
+    "start": "func start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "axios": "1.7.8",
+    "config": "^3.3.10",
+    "google-protobuf": "^3.21.2",
+    "protobufjs": "^7.2.6",
+    "zlib": "^1.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "@types/jest": "^29.5.11",
+    "babel-jest": "^29.7.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0"
+  },
+  "main": "src/functions/*.js"
+}

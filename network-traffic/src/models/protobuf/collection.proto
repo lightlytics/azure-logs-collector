@@ -25,6 +25,7 @@ enum FlowLogsDeviceType {
   // will be removed later
   S3_ACCESS_LOG = 3;
   AZURE_FLOW_LOGS = 4;
+  GCP_FLOW_LOGS = 5;
 }
 
 message FlowLogsProtocol {
@@ -142,7 +143,7 @@ message IAMLog {
   string identityType = 4;
   string action = 5;
   string destination = 6;
-  // string additionalInfo = 7;
+  string additionalInfo = 7;
   string region = 8;
   uint32 count = 9;
   string userAgent = 10;
@@ -155,6 +156,7 @@ message IAMLog {
   string sessionId = 17;
   string newSessionId = 18;
   string newSessionExpiration = 19;
+  string cloudType = 20;
 }
 
 message IAMLogsBatch {

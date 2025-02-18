@@ -1,6 +1,6 @@
 {
   "name": "azure-logs-collector",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "scripts": {
     "copy-proto": "yes | cp -r ../../shared/protobuf ./src/models/",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
-    "axios": "^1.7.4",
+    "axios": "1.7.8",
     "config": "^3.3.10",
     "google-protobuf": "^3.21.2",
     "protobufjs": "^7.2.6",

@@ -1,6 +1,6 @@
-const NSG = require('../../mocks/NSG.json')
-const VNet = require('../../mocks/VNET.json')
-const SingleLog = require('../../mocks/single-vnet.json')
+const NSG = require('../mocks/NSG.json')
+const VNet = require('../mocks/VNET.json')
+const SingleLog = require('../mocks/single-vnet.json')
 const { ParseFlows } = require('./flows')
 
 test('NSG flow logs resource id', () => {
