@@ -31,9 +31,9 @@
     }
   },
   "variables": {
-    "functionAppName": "[format('streamsec-storage-logs-{0}', uniqueString(resourceGroup().id))]",
-    "hostingPlanName": "[format('streamsec-storage-logs-{0}', uniqueString(resourceGroup().id))]",
-    "applicationInsightsName": "[format('streamsec-storage-logs-{0}', uniqueString(resourceGroup().id))]",
+    "functionAppName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
+    "hostingPlanName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
+    "applicationInsightsName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
     "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.2/storage-logs-collector.zip"
   },
