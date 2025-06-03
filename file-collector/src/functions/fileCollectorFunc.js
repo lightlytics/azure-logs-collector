@@ -2,7 +2,7 @@ const { app } = require('@azure/functions')
 const axios = require('axios')
 
 app.storageBlob('fileCollector', {
-  path: process.env.BLOB_CONTAINER + '/{name}',
+  path: process.env.BLOB_CONTAINER + '/{name}.log.gz',
   connection: 'AzureWebJobsStorage',
   handler: async (blob, context) => {
     const apiUrl = process.env.API_URL.replace(/\/+$/, '') + '/api/v1/collection/' + (process.env.API_URL_SUFFIX || '')
@@ -13,16 +13,18 @@ app.storageBlob('fileCollector', {
       const payloadObj = { data: Buffer.from(blob).toString('base64') }
       const payloadStr = JSON.stringify(payloadObj)
 
-      await axios.post(apiUrl, payloadStr, {
+      const response = await axios.post(apiUrl, payloadStr, {
         headers: {
           'Content-Type': 'application/json',
           'X-Lightlytics-Token': apiToken,
         },
         timeout: 3500,
       })
-      context.log(`Sent: ${blobName}`)
+
+      console.log(`Sent: ${blobName}, response status: ${response.status}`)
     } catch (err) {
-      context.log.error(`Failed to forward file ${blobName}:`, err)
+      console.error(`Failed to forward file ${blobName}:`, err.message)
     }
   },
 })
+
