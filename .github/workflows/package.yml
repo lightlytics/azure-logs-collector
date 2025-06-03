@@ -18,10 +18,14 @@ jobs:
       - run: |
           cd storage-logs
           npm install --omit=dev
+      - run: |
+          cd file-collector
+          npm install --omit=dev
       - name: Zip Folder
         run: |
           cd network-traffic && zip -r ../network-traffic-collector.zip . -x ".git/*" ".github/*" ".vscode/*"
           cd ../storage-logs && zip -r ../storage-logs-collector.zip . -x ".git/*" ".github/*" ".vscode/*"
+          cd ../file-collector && zip -r ../file-collector.zip . -x ".git/*" ".github/*" ".vscode/*"
       - name: release
         uses: actions/create-release@v1
         id: create_release
@@ -53,3 +57,14 @@ jobs:
           asset_path: storage-logs-collector.zip
           asset_name: storage-logs-collector.zip
           asset_content_type: application/zip
+      - name: upload file collector artifact to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          body: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: file-collector.zip
+          asset_name: file-collector.zip
+          asset_content_type: application/zip
+
