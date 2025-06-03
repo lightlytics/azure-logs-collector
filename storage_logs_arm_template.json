@@ -35,7 +35,7 @@
     "hostingPlanName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.2/storage-logs-collector.zip"
+    "packageUri": "https://github.com/lightlytics/azure-log-collector/releases/download/1.0.3/storage-logs-collector.zip"
   },
   "resources": [
     {
@@ -84,7 +84,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~14"
+              "value": "~20"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",

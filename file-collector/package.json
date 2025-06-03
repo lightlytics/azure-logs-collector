@@ -1,12 +1,13 @@
 {
   "name": "file-collector",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Azure Function to collect files from Blob Storage and forward to Stream API.",
   "main": "src/functions/fileCollectorFunc.js",
   "scripts": {
-    "test": "echo \"No tests yet\""
+    "start": "func start"
   },
   "dependencies": {
+    "@azure/functions": "^4.0.0",
     "@azure/storage-blob": "^12.15.0",
     "axios": "^1.6.0"
   }

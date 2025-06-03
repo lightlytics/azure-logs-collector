@@ -2,12 +2,19 @@ const { app } = require('@azure/functions')
 const axios = require('axios')
 
 app.storageBlob('fileCollector', {
-  path: process.env.BLOB_CONTAINER + '/{name}.log.gz',
+  path: `${process.env.BLOB_CONTAINER}/{name}`,
   connection: 'AzureWebJobsStorage',
   handler: async (blob, context) => {
+    const blobName = context.triggerMetadata.name
+
+    // Check if the file has a .log.gz extension
+    if (!blobName.endsWith('.log.gz')) {
+      console.log(`Skipping ${blobName}`)
+      return
+    }
+
     const apiUrl = process.env.API_URL.replace(/\/+$/, '') + '/api/v1/collection/' + (process.env.API_URL_SUFFIX || '')
     const apiToken = process.env.API_TOKEN
-    const blobName = context.triggerMetadata.name
 
     try {
       const payloadObj = { data: Buffer.from(blob).toString('base64') }

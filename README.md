@@ -29,22 +29,6 @@ Able to collect and forward files from any blob container (for example, GitHub a
 
 [<img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Ffile_collector_arm_template.json)
 
-#### Parameters
-
-- **Resource Group**
-- **Region**
-- **Stream Security Api Url**
-    - API Url of your environment _(without a trailing slash)_, for example:
-      `https://app.streamsec.io`
-- **Stream Security Collection Token**
-    - API token that can be obtained from Stream Security **_Integrations page_**
-- **Storage Account Name**
-    - Name of the Storage Account that contains the container with targeted files
-- **Blob Container**
-    - Blob container in a storage account that contains the files to be collected
-- **API URL Suffix**
-    - Suffix for the API endpoint, default is `github-audit`
-
 ## Deployment
 
 _Click the button below and provide the following parameters:_
@@ -60,3 +44,5 @@ _Click the button below and provide the following parameters:_
     - name of the Storage Account that contains the container with targeted logs
 - **Blob Container**
     - Blob container in a storage account that contains _Network Traffic logs_ / _Storage logs_
+- **API URL Suffix**
+    - Suffix for the API endpoint, default is `github-audit`

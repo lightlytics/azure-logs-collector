@@ -47,7 +47,7 @@
     "hostingPlanName": "[format('streamsec-file-fw-{0}', uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[format('streamsec-file-fw-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-log-collectors/releases/download/1.0.2/file-collector.zip"
+    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.3/file-collector.zip"
   },
   "resources": [
     {
@@ -96,7 +96,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~14"
+              "value": "~20"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -134,18 +134,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
         "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments",
-      "apiVersion": "2022-04-01",
-      "name": "[format('{0}/default/{1}/Microsoft.Authorization/{2}', parameters('storageAccountName'), parameters('blobContainerName'), guid(resourceGroup().id, parameters('storageAccountName'), parameters('blobContainerName'), 'blob-reader'))]",
-      "properties": {
-        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-        "principalId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2021-03-01', 'Full').identity.principalId]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
       ]
     },
     {
