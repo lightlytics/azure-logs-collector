@@ -4,6 +4,7 @@ Currently supported log types:
 
 - [Network Traffic Logs](#network-traffic-collector-function)
 - [Storage Logs](#azure-storage-analytics-logging)
+- [File Collector](#file-collector)
 
 ### Network Traffic Collector Function
 
@@ -21,6 +22,28 @@ able to collect storage logs from:
 - [Storage Accounts (blob containers)](https://learn.microsoft.com/en-us/azure/storage/common/storage-analytics-logging)
 
 [<img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Fstorage_logs_arm_template.json)
+
+### File Collector
+
+Able to collect and forward files from any blob container (for example, GitHub audit logs) to the Stream Security API.
+
+[<img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Ffile_collector_arm_template.json)
+
+#### Parameters
+
+- **Resource Group**
+- **Region**
+- **Stream Security Api Url**
+    - API Url of your environment _(without a trailing slash)_, for example:
+      `https://app.streamsec.io`
+- **Stream Security Collection Token**
+    - API token that can be obtained from Stream Security **_Integrations page_**
+- **Storage Account Name**
+    - Name of the Storage Account that contains the container with targeted files
+- **Blob Container**
+    - Blob container in a storage account that contains the files to be collected
+- **API URL Suffix**
+    - Suffix for the API endpoint, default is `github-audit`
 
 ## Deployment
 

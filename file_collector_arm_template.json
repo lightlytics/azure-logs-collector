@@ -110,7 +110,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "[format('{0}/{1}/{2}/{3}', parameters('storageAccountName'), 'default', parameters('blobContainerName'), guid(variables('functionAppName'), parameters('blobContainerName')))]",
+      "name": "[format('{0}/default/{1}/Microsoft.Authorization/{2}', parameters('storageAccountName'), parameters('blobContainerName'), guid(variables('functionAppName'), parameters('blobContainerName')))]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "principalId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2021-03-01', 'Full').identity.principalId]"
