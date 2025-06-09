@@ -97,7 +97,7 @@ const ParseFlows = data => {
   )
 
   flows.forEach(log => {
-    if (log.bytes_received) {
+    if (Number(log.bytes_received) > 0) {
       logs.push(FlowlogConverter(SwapLogDirection(log), true))
     }
     logs.push(FlowlogConverter(log))
