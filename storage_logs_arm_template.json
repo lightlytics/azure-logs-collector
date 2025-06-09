@@ -1,4 +1,4 @@
-// https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Fstorage_logs_arm_template.json
+// https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-logs-collectors%2Fmain%2Fstorage_logs_arm_template.json
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
@@ -35,7 +35,7 @@
     "hostingPlanName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-log-collector/releases/download/1.0.3/storage-logs-collector.zip"
+    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.3/storage-logs-collector.zip"
   },
   "resources": [
     {
@@ -84,7 +84,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~20"
+              "value": "~14"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",

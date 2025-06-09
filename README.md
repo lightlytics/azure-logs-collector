@@ -25,7 +25,7 @@ able to collect storage logs from:
 
 ### File Collector
 
-Able to collect and forward files from any blob container (for example, GitHub audit logs) to the Stream Security API.
+Able to collect and forward files from any blob container (for example, [GitHub audit logs](https://docs.github.com/en/enterprise-cloud@latest/admin/monitoring-activity-in-your-enterprise/reviewing-audit-logs-for-your-enterprise/streaming-the-audit-log-for-your-enterprise#setting-up-streaming-to-azure-blob-storage)) to the Stream Security API.
 
 [<img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flightlytics%2Fazure-log-collectors%2Fmain%2Ffile_collector_arm_template.json)
 
