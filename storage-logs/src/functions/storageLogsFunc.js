@@ -1,5 +1,5 @@
 const { app } = require('@azure/functions')
-const zlib = require('node:zlib')
+const zlib = require('zlib')
 const { RestClient } = require('../restClient')
 const { IAMLogsBatchProto } = require('../models/protobuf/protoLoaderIAMLogs')
 const { ParseLogs } = require('../storageLogs')
@@ -25,9 +25,9 @@ app.storageBlob('storageLogsCollector', {
 
     const msg = IAMLogsBatchProto.create(batch)
 
-    const protoBatch = zlib
-      .gzipSync(IAMLogsBatchProto.encode(msg).finish())
-      .toString('base64')
+    const protoBatch = Buffer.from(
+      zlib.gzipSync(Buffer.from(IAMLogsBatchProto.encode(msg).finish())),
+    ).toString('base64')
 
     try {
       const response = await httpClient.postIAMLogsBatch(

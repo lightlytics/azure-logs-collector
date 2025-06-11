@@ -90,7 +90,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~14"
+              "value": "~20"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -115,6 +115,10 @@
             {
               "name": "API_TOKEN",
               "value": "[parameters('streamSecurityCollectionToken')]"
+            },
+            {
+              "name": "FUNCTIONS_LOGGING_CONSOLE_LEVEL",
+              "value": "Information"
             }
           ],
           "ftpsState": "FtpsOnly",

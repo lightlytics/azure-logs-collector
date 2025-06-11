@@ -1,5 +1,5 @@
 const { app } = require('@azure/functions')
-const zlib = require('node:zlib')
+const zlib = require('zlib')
 const config = require('config')
 const { RestClient } = require('../restClient')
 const { ParseFlows } = require('../flows')
@@ -22,9 +22,9 @@ app.storageBlob('networkTrafficCollector', {
 
     const msg = flowLogsBatchProto.create(flowsBatch)
 
-    const protoBatch = zlib
-      .gzipSync(flowLogsBatchProto.encode(msg).finish())
-      .toString('base64')
+    const protoBatch = Buffer.from(
+      zlib.gzipSync(Buffer.from(flowLogsBatchProto.encode(msg).finish())),
+    ).toString('base64')
 
     try {
       const response = await httpClient.postFlowLogsBatch(
