@@ -43,9 +43,12 @@
     }
   },
   "variables": {
-    "functionAppName": "[format('streamsec-file-fw-{0}', uniqueString(resourceGroup().id))]",
-    "hostingPlanName": "[format('streamsec-file-fw-{0}', uniqueString(resourceGroup().id))]",
-    "applicationInsightsName": "[format('streamsec-file-fw-{0}', uniqueString(resourceGroup().id))]",
+    "prefixFile": "streamsec-file-",
+    "locationString": "[replace(toLower(resourceGroup().location), ' ', '')]",
+    "maxUniqueStringChars": "[sub(sub(32, length(variables('prefixFile'))), length(variables('locationString')))]",
+    "functionAppName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
+    "hostingPlanName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
+    "applicationInsightsName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "functionWorkerRuntime": "node",
     "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.3/file-collector.zip"
   },
@@ -159,4 +162,3 @@
     }
   }
 }
-

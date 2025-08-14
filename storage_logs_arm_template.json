@@ -31,9 +31,12 @@
     }
   },
   "variables": {
-    "functionAppName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
-    "hostingPlanName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
-    "applicationInsightsName": "[format('streamsec-logs-{0}', uniqueString(resourceGroup().id))]",
+    "prefixStorage": "streamsec-storage-",
+    "locationString": "[replace(toLower(resourceGroup().location), ' ', '')]",
+    "maxUniqueStringChars": "[sub(sub(32, length(variables('prefixStorage'))), length(variables('locationString')))]",
+    "functionAppName": "[format('{0}{1}{2}', variables('prefixStorage'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
+    "hostingPlanName": "[format('{0}{1}{2}', variables('prefixStorage'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
+    "applicationInsightsName": "[format('{0}{1}{2}', variables('prefixStorage'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "functionWorkerRuntime": "node",
     "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.3/storage-logs-collector.zip"
   },
@@ -124,7 +127,7 @@
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
       "name": "[variables('applicationInsightsName')]",
-      "location": "eastus",
+      "location": "[resourceGroup().location]",
       "kind": "web",
       "properties": {
         "Application_Type": "web",
