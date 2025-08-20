@@ -9,6 +9,13 @@
     }
   },
   "parameters": {
+    "storageAccountLocation": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Storage Account Location/Region for deployment. Leave empty to use resource group location, or enter any valid Azure region name (e.g., eastus, westeurope, southeastasia, etc.)."
+      }
+    },
     "apiUrl": {
       "type": "string",
       "defaultValue": "https://app.streamsec.io",
@@ -24,7 +31,7 @@
       }
     },
     "apiCollectionToken": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Collection token used for authentication"
       }
@@ -32,7 +39,7 @@
     "storageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Storage Account Name"
+        "description": "Name of the existing Azure Storage Account that contains the files/audit logs to be monitored and processed"
       }
     },
     "blobContainerName": {
@@ -43,8 +50,11 @@
     }
   },
   "variables": {
+    "defaultLocation": "[resourceGroup().location]",
+    "deploymentLocation": "[if(empty(parameters('storageAccountLocation')), variables('defaultLocation'), parameters('storageAccountLocation'))]",
+    "trimmedApiUrl": "[if(endsWith(parameters('apiUrl'), '/'), substring(parameters('apiUrl'), 0, sub(length(parameters('apiUrl')), 1)), parameters('apiUrl'))]",
     "prefixFile": "streamsec-file-",
-    "locationString": "[replace(toLower(resourceGroup().location), ' ', '')]",
+    "locationString": "[replace(toLower(variables('deploymentLocation')), ' ', '')]",
     "maxUniqueStringChars": "[sub(sub(32, length(variables('prefixFile'))), length(variables('locationString')))]",
     "functionAppName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "hostingPlanName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
@@ -57,7 +67,7 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2021-03-01",
       "name": "[variables('hostingPlanName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "sku": {
         "name": "Y1",
         "tier": "Dynamic"
@@ -68,7 +78,7 @@
       "type": "Microsoft.Web/sites",
       "apiVersion": "2021-03-01",
       "name": "[variables('functionAppName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "kind": "functionapp",
       "identity": {
         "type": "SystemAssigned"
@@ -115,7 +125,7 @@
             },
             {
               "name": "API_URL",
-              "value": "[parameters('apiUrl')]"
+              "value": "[variables('trimmedApiUrl')]"
             },
             {
               "name": "API_URL_SUFFIX",
@@ -147,7 +157,7 @@
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
       "name": "[variables('applicationInsightsName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "kind": "web",
       "properties": {
         "Application_Type": "web",

@@ -18,7 +18,7 @@
       }
     },
     "streamSecurityCollectionToken": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Stream Security collection token used to forward logs"
       }
@@ -26,7 +26,14 @@
     "storageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Storage Account Name"
+        "description": "Name of the existing Azure Storage Account that contains the network traffic flow logs to be processed"
+      }
+    },
+    "storageAccountLocation": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Storage Account Location/Region for deployment. Leave empty to use resource group location, or enter any valid Azure region name (e.g., eastus, westeurope, southeastasia, etc.)."
       }
     },
     "networkTrafficBlobContainer": {
@@ -37,8 +44,11 @@
     }
   },
   "variables": {
+    "defaultLocation": "[resourceGroup().location]",
+    "deploymentLocation": "[if(empty(parameters('storageAccountLocation')), variables('defaultLocation'), parameters('storageAccountLocation'))]",
+    "trimmedApiUrl": "[if(endsWith(parameters('streamSecurityApiUrl'), '/'), substring(parameters('streamSecurityApiUrl'), 0, sub(length(parameters('streamSecurityApiUrl')), 1)), parameters('streamSecurityApiUrl'))]",
     "prefixNet": "streamsec-net-",
-    "locationString": "[replace(toLower(resourceGroup().location), ' ', '')]",
+    "locationString": "[replace(toLower(variables('deploymentLocation')), ' ', '')]",
     "maxUniqueStringChars": "[sub(sub(32, length(variables('prefixNet'))), length(variables('locationString')))]",
     "functionAppName": "[format('{0}{1}{2}', variables('prefixNet'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "hostingPlanName": "[format('{0}{1}{2}', variables('prefixNet'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
@@ -51,7 +61,7 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2021-03-01",
       "name": "[variables('hostingPlanName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "sku": {
         "name": "Y1",
         "tier": "Dynamic"
@@ -62,7 +72,7 @@
       "type": "Microsoft.Web/sites",
       "apiVersion": "2021-03-01",
       "name": "[variables('functionAppName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "kind": "functionapp",
       "identity": {
         "type": "SystemAssigned"
@@ -113,7 +123,7 @@
             },
             {
               "name": "API_URL",
-              "value": "[parameters('streamSecurityApiUrl')]"
+              "value": "[variables('trimmedApiUrl')]"
             },
             {
               "name": "API_TOKEN",
@@ -137,7 +147,7 @@
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
       "name": "[variables('applicationInsightsName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('deploymentLocation')]",
       "kind": "web",
       "properties": {
         "Application_Type": "web",
