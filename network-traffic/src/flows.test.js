@@ -2,11 +2,20 @@ const NSG = require('../mocks/NSG.json')
 const VNet = require('../mocks/VNET.json')
 const SingleLog = require('../mocks/single-vnet.json')
 const { ParseFlows } = require('./flows')
+const { FlowLogsDeviceTypeEnum } = require('./models/protobuf/proto')
 
-test('NSG flow logs resource id', () => {
+test('NSG flow logs device type', () => {
   const result = ParseFlows(NSG)
 
   expect(result.deviceId).toBe('azure_network_security_group')
+  expect(result.deviceType).toBe(FlowLogsDeviceTypeEnum.values.AZURE_FLOW_LOGS)
+})
+
+test('VNET flow logs device type', () => {
+  const result = ParseFlows(VNet)
+
+  expect(result.deviceId).toBe('azure_virtual_network')
+  expect(result.deviceType).toBe(FlowLogsDeviceTypeEnum.values.AZURE_FLOW_LOGS)
 })
 
 test('NSG flow logs should have all elements', () => {
@@ -28,7 +37,7 @@ test('VNet flow logs resource id', () => {
 test('VNET flow logs should have all elements', () => {
   const result = ParseFlows(VNet)
 
-  expect(result.logs).toHaveLength(38)
+  expect(result.logs).toHaveLength(24)
 })
 
 test('Log should be duplicated and swapped src & dst', () => {
