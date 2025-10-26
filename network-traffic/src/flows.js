@@ -98,7 +98,7 @@ const ParseFlows = data => {
 
   flows.forEach(log => {
     if (Number(log.bytes_received) > 0) {
-      logs.push(FlowlogConverter(SwapLogDirection(log), true))
+      logs.push(FlowlogConverter(SwapLogDirection(log)))
     }
     logs.push(FlowlogConverter(log))
   })
@@ -122,6 +122,8 @@ const SwapLogDirection = log => {
   swappedLog.dstport = log.srcport
   swappedLog.bytes_sent = log.bytes_received
   swappedLog.bytes_received = log.bytes_sent
+  swappedLog.packets_sent = log.packets_received
+  swappedLog.packets_received = log.packets_sent
 
   return swappedLog
 }
@@ -138,8 +140,8 @@ const FlowlogConverter = (
     traffic_decision,
     flow_state,
     bytes_sent,
+    packets_sent,
   },
-  swapped = false,
 ) => {
   const date = new Date(start ? Number(start) * 1000 : Number(startms))
   const protocolCode = isNaN(protocol)
@@ -152,6 +154,11 @@ const FlowlogConverter = (
       ? FlowLogActionEnum.values.REJECT
       : FlowLogActionEnum.values.ACCEPT
   const isTcp = protocolCode === 6
+
+  // Determine if source is the client (initiator) based on port numbers
+  // Client typically uses ephemeral ports (>1024), server uses well-known ports (<=1024)
+  const srcIsClient = Number(srcport) > Number(dstport)
+
   return flowLogsMsgProto.create({
     start: dateToProtoTimestamp(date),
     end: dateToProtoTimestamp(date),
@@ -167,16 +174,18 @@ const FlowlogConverter = (
         : iana[protocol] || (protocol === '6' ? 'TCP' : 'UDP'),
       protocolCode,
     },
-    bytes: Number(bytes_sent),
+    packets: Number(packets_sent) || 0,
+    bytes: Number(bytes_sent) || 0,
     action,
-    tcpFlags: isTcp ? getTcpFlags(flow_state, swapped) : 0,
+    tcpFlags: isTcp ? getTcpFlags(flow_state, srcIsClient) : 0,
   })
 }
 
-function getTcpFlags(flow_state, swapped = false) {
+function getTcpFlags(flow_state, srcIsClient) {
   switch (flow_state) {
     case 'B':
-      return swapped ? 18 : 2
+      // For TCP handshake: client sends SYN (2), server sends SYN-ACK (18)
+      return srcIsClient ? 2 : 18
     case 'C':
       return 0
     case 'E':

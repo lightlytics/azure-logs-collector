@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "time": "2025-09-23T12:45:54.9140000Z",
+      "flowLogVersion": 4,
+      "category": "FlowLogFlowEvent",
+      "flowLogResourceID": "/SUBSCRIPTIONS/00000000-0000-0000-0000-000000000000/RESOURCEGROUPS/NETWORKWATCHERRG/PROVIDERS/MICROSOFT.NETWORK/NETWORKWATCHERS/NETWORKWATCHER_EASTUS2EUAP/FLOWLOGS/VNETFLOWLOG",
+      "targetResourceID": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet",
+      "operationName": "FlowLogFlowEvent",
+      "flowRecords": {
+        "flows": [
+          {
+            "aclID": "00000000-1234-abcd-ef00-c1c2c3c4c5c6",
+            "flowGroups": [
+              {
+                "rule": "InboundSSHAttempt",
+                "flowTuples": [
+                  "1758553154914,121.229.59.68,10.2.0.4,51374,22,6,I,B,NX,0,0,0,0"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
