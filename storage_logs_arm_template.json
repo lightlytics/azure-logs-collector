@@ -48,7 +48,7 @@
     "hostingPlanName": "[format('{0}{1}{2}', variables('prefixStorage'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "applicationInsightsName": "[format('{0}{1}{2}', variables('prefixStorage'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.3/storage-logs-collector.zip"
+    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.4/storage-logs-collector.zip"
   },
   "resources": [
     {
