@@ -151,6 +151,7 @@ const FlowlogConverter = (
     traffic_decision === 'D' || flow_state === 'D'
       ? FlowLogActionEnum.values.REJECT
       : FlowLogActionEnum.values.ACCEPT
+  const isTcp = protocolCode === 6
   return flowLogsMsgProto.create({
     start: dateToProtoTimestamp(date),
     end: dateToProtoTimestamp(date),
@@ -168,7 +169,7 @@ const FlowlogConverter = (
     },
     bytes: Number(bytes_sent),
     action,
-    tcpFlags: getTcpFlags(flow_state, swapped),
+    tcpFlags: isTcp ? getTcpFlags(flow_state, swapped) : 0,
   })
 }
 
