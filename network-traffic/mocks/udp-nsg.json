@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "time": "2018-11-13T12:00:35.3899262Z",
+      "systemId": "a0fca5ce-022c-47b1-9735-89943b42f2fa",
+      "category": "NetworkSecurityGroupFlowEvent",
+      "resourceId": "/SUBSCRIPTIONS/00000000-0000-0000-0000-000000000000/RESOURCEGROUPS/FABRIKAMRG/PROVIDERS/MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/FABRIAKMVM1-NSG",
+      "operationName": "NetworkSecurityGroupFlowEvents",
+      "properties": {
+        "Version": 2,
+        "flows": [
+          {
+            "rule": "DefaultRule_DenyAllInBound",
+            "flows": [
+              {
+                "mac": "000D3AF87856",
+                "flowTuples": [
+                  "1542110402,94.102.49.190,10.5.16.4,28746,53,U,I,D,B,,,,"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
