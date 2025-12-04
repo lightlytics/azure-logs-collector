@@ -11,10 +11,10 @@
   },
   "parameters": {
     "streamSecurityApiUrl": {
-      "defaultValue": "https://app.streamsec.io",
+      "defaultValue": "",
       "type": "string",
       "metadata": {
-        "description": "Stream Security API url"
+        "description": "Stream Security API url (e.g. https://app.streamsec.io)"
       }
     },
     "streamSecurityCollectionToken": {

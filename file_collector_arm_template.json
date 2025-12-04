@@ -18,9 +18,9 @@
     },
     "apiUrl": {
       "type": "string",
-      "defaultValue": "https://app.streamsec.io",
+      "defaultValue": "",
       "metadata": {
-        "description": "API URL for log forwarding"
+        "description": "Stream Security API url (e.g. https://app.streamsec.io)"
       }
     },
     "apiUrlSuffix": {
