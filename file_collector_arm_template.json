@@ -60,7 +60,7 @@
     "hostingPlanName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "applicationInsightsName": "[format('{0}{1}{2}', variables('prefixFile'), variables('locationString'), take(uniqueString(resourceGroup().id), variables('maxUniqueStringChars')))]",
     "functionWorkerRuntime": "node",
-    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.4/file-collector.zip"
+    "packageUri": "https://github.com/lightlytics/azure-logs-collector/releases/download/1.0.5/file-collector.zip"
   },
   "resources": [
     {
@@ -109,7 +109,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~20"
+              "value": "~22"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
